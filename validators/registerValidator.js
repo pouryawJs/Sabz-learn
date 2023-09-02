@@ -7,7 +7,7 @@ const schema = {
     name : {type: "string", min: 3, max: 256},
     email : {type: "email", min: 3},
     password : {type: "string", min: 3},
-    phone : {type: "number", max : 12},
+    phone : {type: "string"},
     $$strict : true
 }
 
