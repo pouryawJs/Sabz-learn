@@ -13,3 +13,14 @@ exports.ban = async (req, res) => {
 
     return res.status(500).json({ message : "server error !!"})
 };
+
+exports.getAll = async (req, res) => {
+
+    const users = await userModel.find({}).lean()
+
+    for (const key in users) {
+        Reflect.deleteProperty(users[key], "password")
+    }
+
+    return res.status(200).send(users)
+}

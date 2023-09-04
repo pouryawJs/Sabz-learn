@@ -6,6 +6,9 @@ const tokenAuth = require("./../../middlewares/tokenAuth")
 const router = express.Router()
 
 router
+    .route("/")
+    .get(tokenAuth, isAdmin, userController.getAll)
+router
     .route("/ban/:id")
     .post(tokenAuth, isAdmin, userController.ban)
 
