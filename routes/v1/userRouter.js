@@ -14,4 +14,7 @@ router
 router
     .route("/:id")
     .delete(tokenAuth, isAdmin, userController.removeOne)
+router
+    .route("/role")
+    .put(tokenAuth, isAdmin, userController.changeRole)
 module.exports = router

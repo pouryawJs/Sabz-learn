@@ -44,4 +44,28 @@ exports.removeOne = async (req, res) => {
     
     return res.status(200).json({ message : `user removed`})
         
-}   
+}
+
+exports.changeRole = async (req, res) => {
+    const { id } = req.body
+
+    const isValidId = isValidObjectId(id)
+    
+    if(!isValidId){
+        return res.status(409).json({ message : " Id is not valid"})
+    }
+
+    const user = await userModel.findById(id)
+
+    if(!user){
+        return res.status(404).json({ message: "user not found"})
+    }
+
+    const newrole = user.role === "ADMIN" ? "USER" : "ADMIN"
+    
+    const updatedUser = await userModel.findByIdAndUpdate(id, {
+        $set : { role : newrole }
+    })
+
+    return res.status(201).json({ message: `${updatedUser.name}'s role has changed to ${newrole}`})
+}
