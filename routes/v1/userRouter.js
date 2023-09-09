@@ -8,6 +8,7 @@ const router = express.Router()
 router
     .route("/")
     .get(tokenAuth, isAdmin, userController.getAll)
+    .put(tokenAuth, userController.updateOne)
 router
     .route("/ban/:id")
     .post(tokenAuth, isAdmin, userController.ban)

@@ -1,5 +1,6 @@
 const userModel = require("./../../models/User");
 const bannedUserModel = require("./../../models/Banned-phone");
+const bcrypt = require("bcrypt")
 const { isValidObjectId } = require("mongoose");
 
 exports.ban = async (req, res) => {
@@ -68,4 +69,23 @@ exports.changeRole = async (req, res) => {
     })
 
     return res.status(201).json({ message: `${updatedUser.name}'s role has changed to ${newrole}`})
+}
+
+exports.updateOne = async (req, res) => {
+    const {name, username, email, password, phone} = req.body
+
+    const hashedPassword = await bcrypt.hash(password, 10)
+    const updatedUser = await userModel.findByIdAndUpdate(req.user._id, {
+        name,
+        username,
+        email,
+        password : hashedPassword,
+        phone
+    }, { new : true }).select("-password")
+
+    if(!updatedUser){
+        return res.status(404).json({ message: "user not found"})
+    }
+
+    return res.status(201).json(updatedUser)
 }
