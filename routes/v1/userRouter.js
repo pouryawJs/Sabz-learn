@@ -11,5 +11,7 @@ router
 router
     .route("/ban/:id")
     .post(tokenAuth, isAdmin, userController.ban)
-
+router
+    .route("/:id")
+    .delete(tokenAuth, isAdmin, userController.removeOne)
 module.exports = router
