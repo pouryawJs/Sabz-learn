@@ -19,3 +19,7 @@ exports.create = async (req, res) => {
 
     return res.status(500).json({ message: "something went wrong"})
 }
+exports.getAll = async (req, res) => {
+    const categories = await categoryModel.find({})
+    return res.status(200).json(categories)
+}
