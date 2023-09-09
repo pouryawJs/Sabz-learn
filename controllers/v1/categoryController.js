@@ -43,3 +43,30 @@ exports.removeOne = async (req, res) => {
 
     return res.json({ message : "category deleted"})
 }
+
+exports.updateOne = async (req, res) => {
+    // id validation
+    const { id } = req.params
+
+    const isValidId = isValidObjectId(id)
+    
+    if(!isValidId){
+        return res.status(409).json({ message : " Id is not valid"})
+    }
+    // body validation
+    const validationResult = categoryValidator(req.body)
+
+    if(validationResult !== true){
+        return res.status(409).json(validationResult)
+    }
+    // update
+    const { title, href } = req.body
+    
+    const updatedCategory = await categoryModel.findByIdAndUpdate(id, {title, href})
+
+    if(!updatedCategory){
+        return res.status(404).json({ message: "category not found"})
+    }
+
+    res.json({message: "category updated"})
+}

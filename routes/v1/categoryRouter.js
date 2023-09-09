@@ -12,5 +12,6 @@ router
 router
     .route("/:id")
     .delete(tokenAuth, isAdmin, categoryController.removeOne)
-    
+    .put(tokenAuth, isAdmin, categoryController.updateOne);
+
 module.exports = router
