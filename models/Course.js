@@ -10,10 +10,6 @@ const schema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        description: {
-            type: String,
-            required: true,
-        },
         cover: {
             type: String,
             required: true,
@@ -45,7 +41,7 @@ const schema = new mongoose.Schema(
         },
         creator: {
             type: mongoose.Types.ObjectId,
-            ref: "user",
+            ref: "User",
             required: true
         }   
     },
@@ -64,6 +60,6 @@ schema.virtual("comments", {
     foreignField: "course"
 })
 
-const model = mongoose.model("comment", schema);
+const model = mongoose.model("courses", schema);
 
 module.exports = model;
