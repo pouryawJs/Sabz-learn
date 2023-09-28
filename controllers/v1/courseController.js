@@ -92,3 +92,22 @@ exports.getSessionInfo = async (req, res) => {
 
     return res.status(200).json({ session, sessions })
 }
+exports.removeSession = async (req, res) => {
+    const { id } = req.params // session id
+
+    // session id validation 
+    const isValidSessionID = isValidObjectId(id)
+
+    if(!isValidSessionID){
+        return res.status(409).json({message: "session id is not valid"})
+    }
+
+    // delete session
+    const deletedSession = await sessionModel.findByIdAndDelete(id).select("title")
+    
+    if(!deletedSession){
+        return res.status(404).json({message: "session not found"})
+    }
+    
+    return res.status(200).json({deletedSession})
+}

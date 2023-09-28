@@ -17,20 +17,23 @@ router
     );
 
 router
-        .route("/:id/sessions")
-        .post(
-            // multer({ storage: multerStorage}).single("video"),
-            tokenAuth,
-            isAdmin,
-            courseController.createSession)
+    .route("/:id/sessions")
+    .post(
+        // multer({ storage: multerStorage}).single("video"),
+        tokenAuth,
+        isAdmin,
+        courseController.createSession)
 router
-        .route("/sessions")
-        .get(
-            tokenAuth,
-            isAdmin,
-            courseController.getAllSessions)
+    .route("/sessions")
+    .get(
+        tokenAuth,
+        isAdmin,
+        courseController.getAllSessions)
 router
-        .route("/:href/:sessionID") // href: course href
-        .get(courseController.getSessionInfo)
+    .route("/:href/:sessionID") // href: course href
+    .get(courseController.getSessionInfo)
+router
+    .route("/sessions/:id")
+    .delete(tokenAuth, isAdmin, courseController.removeSession)
 
 module.exports = router;
