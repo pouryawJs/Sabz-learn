@@ -57,6 +57,15 @@ exports.createSession = async (req, res) => {
         video: "video.mp4", // req.file.fileName
         course: id
     }) 
-    
+
     return res.status(201).json({session})
+}
+exports.getAllSessions = async (req, res) => {
+    console.log("hello")
+    const sessions = await sessionModel
+        .find({})
+        .populate("course", "name")
+        .lean()
+
+    return res.status(200).json(sessions)
 }

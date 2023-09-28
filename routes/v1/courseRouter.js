@@ -23,5 +23,11 @@ router
             tokenAuth,
             isAdmin,
             courseController.createSession)
+router
+        .route("/sessions")
+        .get(
+            tokenAuth,
+            isAdmin,
+            courseController.getAllSessions)
 
 module.exports = router;
