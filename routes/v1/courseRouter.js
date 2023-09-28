@@ -16,4 +16,12 @@ router
         courseController.create
     );
 
+router
+        .route("/:id/sessions")
+        .post(
+            // multer({ storage: multerStorage}).single("video"),
+            tokenAuth,
+            isAdmin,
+            courseController.createSession)
+
 module.exports = router;

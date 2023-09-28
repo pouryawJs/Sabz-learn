@@ -10,7 +10,7 @@ const schema = new mongoose.Schema({
         required : true
     },
     free : {
-        type : Nunber,
+        type : Number,
         required : true
     },
     video : {
