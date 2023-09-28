@@ -29,5 +29,8 @@ router
             tokenAuth,
             isAdmin,
             courseController.getAllSessions)
+router
+        .route("/:href/:sessionID") // href: course href
+        .get(courseController.getSessionInfo)
 
 module.exports = router;

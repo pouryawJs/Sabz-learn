@@ -61,11 +61,34 @@ exports.createSession = async (req, res) => {
     return res.status(201).json({session})
 }
 exports.getAllSessions = async (req, res) => {
-    console.log("hello")
     const sessions = await sessionModel
         .find({})
         .populate("course", "name")
         .lean()
 
     return res.status(200).json(sessions)
+}
+exports.getSessionInfo = async (req, res) => {
+    const { href , sessionID } = req.params
+    
+    // session id validation
+    const isValidSessionId = isValidObjectId(sessionID)
+
+    if(!isValidSessionId){
+        return res.status(409).json({ message:"id is not valid"})
+    }
+
+    // get session info
+
+    const course = await courseModel.findOne({ href }).lean();
+    
+    if(!course){
+        return res.status(404).json({ message: "there is no course with this href"})
+    }
+
+    const session = await sessionModel.findById(sessionID)
+
+    const sessions = await sessionModel.find({ course: course._id})
+
+    return res.status(200).json({ session, sessions })
 }
