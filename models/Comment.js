@@ -19,7 +19,7 @@ const schema = new mongoose.Schema(
             default: 0,
         },
         score: {
-            type: Nunber, // 1 to 5
+            type: Number, // 1 to 5
             default: 5,
         },
         isAnswer: {
