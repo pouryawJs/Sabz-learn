@@ -1,6 +1,7 @@
 const { isValidObjectId } = require("mongoose")
 const courseModel = require("./../../models/Course")
 const sessionModel = require("./../../models/Session")
+const courseUserModel = require("./../../models/course-user")
 
 exports.create = async (req, res) => {
     const {
@@ -110,4 +111,28 @@ exports.removeSession = async (req, res) => {
     }
     
     return res.status(200).json({deletedSession})
+}
+exports.userRegister = async (req, res) => {
+    const userID = req.user._id
+    const { id: courseID } = req.params 
+    const { price } = req.body 
+
+    // is user already registered??
+    const isUserRegistered = await courseUserModel.findOne({
+        user: userID,
+        course: courseID,
+    }) 
+
+    if(isUserRegistered) {
+        return res.status(409).json({ message: "user already registered"})
+    }
+
+    // register
+    await courseUserModel.create({
+        user: userID,
+        course: courseID,
+        price
+    })
+
+    return res.status(201).json({ message: "register successfully"})
 }

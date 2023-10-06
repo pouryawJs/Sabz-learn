@@ -35,5 +35,8 @@ router
 router
     .route("/sessions/:id")
     .delete(tokenAuth, isAdmin, courseController.removeSession)
+router
+    .route("/:id/register")
+    .post(tokenAuth, courseController.userRegister)
 
 module.exports = router;
