@@ -15,7 +15,9 @@ router
         isAdmin,
         courseController.create
     );
-
+router
+    .route("/category/:href")
+    .get(courseController.getCoursesByCategory)
 router
     .route("/:id/sessions")
     .post(

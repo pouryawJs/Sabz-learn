@@ -2,6 +2,7 @@ const { isValidObjectId } = require("mongoose")
 const courseModel = require("./../../models/Course")
 const sessionModel = require("./../../models/Session")
 const courseUserModel = require("./../../models/course-user")
+const categoryModel = require("./../../models/Category")
 
 exports.create = async (req, res) => {
     const {
@@ -135,4 +136,16 @@ exports.userRegister = async (req, res) => {
     })
 
     return res.status(201).json({ message: "register successfully"})
+}
+exports.getCoursesByCategory = async (req, res) => {
+    const { href } = req.params
+    const category = await categoryModel.findOne({ href })
+
+    if(category){
+        const categoryCourses = await courseModel.find({ categoryID: category._id })
+
+        return res.json({ courses: categoryCourses })
+    }else {
+        return res.json([])
+    }
 }
