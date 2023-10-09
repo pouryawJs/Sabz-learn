@@ -3,6 +3,7 @@ const courseModel = require("./../../models/Course")
 const sessionModel = require("./../../models/Session")
 const courseUserModel = require("./../../models/course-user")
 const categoryModel = require("./../../models/Category")
+const commentModel = require("./../../models/Comment")
 
 exports.create = async (req, res) => {
     const {
@@ -148,4 +149,21 @@ exports.getCoursesByCategory = async (req, res) => {
     }else {
         return res.json([])
     }
+}
+exports.getOne = async(req, res) => {
+    const { href: courseHref } = req.params
+
+    const course = await courseModel.findOne({ href: courseHref })
+        .populate("categoryID")
+        .populate("creator", "-password")
+
+    const sessions = await sessionModel.find({ course: course._id }).lean();
+    const comments = await commentModel.find({ course: course._id, isAccept: 1 })
+        .populate("creator", "-password")
+        .lean();
+    const students = await courseUserModel.find({ course: course._id })
+        .populate("user", "-password")
+        .lean();
+
+    return res.json({ course, sessions, comments, students})
 }

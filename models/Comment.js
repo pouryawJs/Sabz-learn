@@ -8,11 +8,11 @@ const schema = new mongoose.Schema(
         },
         course: {
             type: mongoose.Types.ObjectId,
-            ref: "course",
+            ref: "courses",
         },
         creator: {
             type: mongoose.Types.ObjectId,
-            ref: "user",
+            ref: "User",
         },
         isAccept: {
             type: Number, // 0 = false - 1 = true
