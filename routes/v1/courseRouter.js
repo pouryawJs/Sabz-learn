@@ -42,6 +42,6 @@ router
     .post(tokenAuth, courseController.userRegister)
 router
     .route("/:href")
-    .get(courseController.getOne)
+    .get(tokenAuth, courseController.getOne)
 
 module.exports = router;

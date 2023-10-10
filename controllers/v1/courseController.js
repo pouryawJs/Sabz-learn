@@ -165,5 +165,10 @@ exports.getOne = async(req, res) => {
         .populate("user", "-password")
         .lean();
 
-    return res.json({ course, sessions, comments, students})
+    const isUserRegistered = !!(await courseUserModel.findOne({
+        course: course._id,
+        user: req.user._id
+    }))
+
+    return res.json({ course, sessions, comments, students, isUserRegistered})
 }
