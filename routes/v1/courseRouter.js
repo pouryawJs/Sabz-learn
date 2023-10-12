@@ -43,5 +43,8 @@ router
 router
     .route("/:href")
     .get(tokenAuth, courseController.getOne)
+router
+    .route("/:id")
+    .delete(tokenAuth, isAdmin, courseController.removeOne)
 
 module.exports = router;

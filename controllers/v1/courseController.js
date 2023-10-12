@@ -172,3 +172,22 @@ exports.getOne = async(req, res) => {
 
     return res.json({ course, sessions, comments, students, isUserRegistered})
 }
+exports.removeOne = async (req, res) => {
+    const courseID = req.params.id
+
+    // id validation
+    const isValidCourseID = isValidObjectId(courseID)
+
+    if(!isValidCourseID){
+        return res.status(409).json({message: "course id is not valid"})
+    }
+
+    // remove 
+    const removedCourse = await courseModel.findByIdAndRemove(courseID).lean()
+
+    if(!removedCourse){
+        return res.status(404).json({message: "course not found"})
+    }
+
+    return res.json({ message: 'course removed successfully'})
+}
