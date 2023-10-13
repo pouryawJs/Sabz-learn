@@ -191,3 +191,18 @@ exports.removeOne = async (req, res) => {
 
     return res.json({ message: 'course removed successfully'})
 }
+exports.getRelatedCourses = async (req, res) => {
+    const { href } = req.params
+    
+    const mainCourse = await courseModel.findOne({ href }).lean()
+
+    if(!mainCourse){
+        return res.status(404).json({ message: "course with this href doesn't exist"})
+    }
+
+    let relatedCourses = await courseModel.find({ categoryID: mainCourse.categoryID })
+
+    relatedCourses = relatedCourses.filter(course => course.href !== href)
+
+    return res.json(relatedCourses)
+}

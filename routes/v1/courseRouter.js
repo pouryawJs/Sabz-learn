@@ -19,6 +19,9 @@ router
     .route("/category/:href")
     .get(courseController.getCoursesByCategory)
 router
+    .route("/related/:href")
+    .get(courseController.getRelatedCourses)
+router
     .route("/:id/sessions")
     .post(
         // multer({ storage: multerStorage}).single("video"),
