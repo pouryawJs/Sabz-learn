@@ -48,3 +48,51 @@ exports.remove = async (req, res) => {
 
     return res.json({ message: "comment removed successfully"})
 }
+exports.accept = async (req, res) => {
+    const { id } = req.params
+
+    // id validation
+    const isValidCommentID = isValidObjectId(id)
+
+    if(!isValidCommentID){
+        return res.status(409).json({ message: "id is not valid"})
+    }
+
+    // accept the comment
+    const acceptedComment = await commentModel.findByIdAndUpdate(
+        id,
+        { $set: {
+            isAccept: 1
+        }}
+    )
+
+    if(!acceptedComment){
+        return res.status(404).json({ message: " comment not found"})
+    }
+
+    return res.json({ message: "comment accepted successfully"})
+}
+exports.reject = async (req, res) => {
+    const { id } = req.params
+
+    // id validation
+    const isValidCommentID = isValidObjectId(id)
+
+    if(!isValidCommentID){
+        return res.status(409).json({ message: "id is not valid"})
+    }
+
+    // reject the comment
+    const rejectedComment = await commentModel.findByIdAndUpdate(
+        id,
+        { $set: {
+            isAccept: 0
+        }}
+    )
+
+    if(!rejectedComment){
+        return res.status(404).json({ message: " comment not found"})
+    }
+
+    return res.json({ message: "comment rejected successfully"})
+}
