@@ -1,3 +1,4 @@
+const { isValidObjectId } = require("mongoose");
 const commentModel = require("./../../models/Comment")
 const courseModel = require("./../../models/Course")
 
@@ -27,4 +28,23 @@ exports.create = async (req, res) => {
     }
 
     res.status(201).json({ message: "comment created"})
+}
+exports.remove = async (req, res) => {
+    const { id } = req.params
+
+    // id validation
+    const isValidCommentID = isValidObjectId(id)
+
+    if(!isValidCommentID){
+        return res.status(409).json({ message: "id is not valid"})
+    }
+
+    // remove
+    const removedComment = await commentModel.findByIdAndRemove(id)
+
+    if(!removedComment){
+        return res.status(404).json({ message: "comment not found"})
+    }
+
+    return res.json({ message: "comment removed successfully"})
 }
