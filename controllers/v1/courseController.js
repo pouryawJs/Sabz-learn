@@ -156,6 +156,7 @@ exports.getOne = async(req, res) => {
     const course = await courseModel.findOne({ href: courseHref })
         .populate("categoryID")
         .populate("creator", "-password")
+        .lean();
 
     const sessions = await sessionModel.find({ course: course._id }).lean();
     const comments = await commentModel.find({ course: course._id, isAccept: 1 })
@@ -170,7 +171,22 @@ exports.getOne = async(req, res) => {
         user: req.user._id
     }))
 
-    return res.json({ course, sessions, comments, students, isUserRegistered})
+    // comments 
+    const allComments = [];
+
+    comments.forEach(comment => {
+        comments.forEach(answeredComment => {
+            if(String(comment._id) == String(answeredComment.mainCommentID)){
+                allComments.push({
+                    ...comment,
+                    course: course.name,
+                    creator: comment.creator.name,
+                    answeredComment
+                })
+            }
+        })
+    })
+    return res.json({ course, sessions, comments: allComments, students, isUserRegistered})
 }
 exports.removeOne = async (req, res) => {
     const courseID = req.params.id
