@@ -9,5 +9,6 @@ router.route("/").post(tokenAuth, commentController.create)
 router.route("/:id").delete(tokenAuth, isAdmin, commentController.remove)
 router.route("/:id/accept").put(tokenAuth, isAdmin, commentController.accept)
 router.route("/:id/reject").put(tokenAuth, isAdmin, commentController.reject)
+router.route("/:id/answer").post(tokenAuth, isAdmin, commentController.answer)
 
 module.exports = router

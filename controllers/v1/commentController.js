@@ -96,3 +96,36 @@ exports.reject = async (req, res) => {
 
     return res.json({ message: "comment rejected successfully"})
 }
+exports.answer = async (req, res) => {
+    const { id } = req.params
+    const { body } = req.body
+
+    // id validation
+    const isValidCommentID = isValidObjectId(id)
+
+    if(!isValidCommentID){
+        return res.status(409).json({ message: "id is not valid"})
+    }
+    // accept the main comment
+    const acceptedComment = await commentModel.findByIdAndUpdate(id,
+        { $set: { 
+            isAccept:1
+        }}
+    )
+
+    if(!acceptedComment){
+        return res.status(404).json({ message: "comment not found"})
+    }
+
+    // create answer comment
+    const answerComment = await commentModel.create({
+        body,
+        course: acceptedComment.course,
+        creator: req.user._id,
+        isAnswer: 1,
+        isAccept: 1,
+        mainCommentID: id
+    })
+
+    return res.status(201).json(answerComment)
+}
