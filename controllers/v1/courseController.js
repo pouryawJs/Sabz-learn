@@ -223,7 +223,19 @@ exports.getRelatedCourses = async (req, res) => {
     return res.json(relatedCourses)
 }
 exports.getPopularCourses = async (req, res) => {
+    const courses = await courseModel.find({}).lean();
 
+    let coursesWithStudentsCount = []
+    
+
+    for (const course of courses) {
+        course.studentsCount = await courseUserModel.find({ course: course._id }).count()
+        coursesWithStudentsCount.push(course)
+    }
+
+    const sortedCourses = coursesWithStudentsCount.sort((a, b) => b.studentsCount - a.studentsCount)
+
+    return res.json({courses: sortedCourses})
 }
 exports.getPresaleCourses = async (req, res) => {
     const courses = await courseModel.find({ status: "پیش فروش"}).lean();
