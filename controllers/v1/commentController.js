@@ -129,3 +129,25 @@ exports.answer = async (req, res) => {
 
     return res.status(201).json(answerComment)
 }
+exports.getAll = async (req, res) => {
+    const comments = await commentModel.find({})
+        .populate("creator", "-password")
+        .populate("course")
+        .lean();
+
+    let allComments = []
+
+    comments.forEach(comment => {
+        comments.forEach(answeredComment => {
+            if(String(comment._id) == String(answeredComment.mainCommentID)){
+                allComments.push({
+                    ...comment,
+                     answeredComment,
+                     course: comment.course.name
+                })
+            }
+        })
+    })
+
+    return res.json(allComments)
+}
