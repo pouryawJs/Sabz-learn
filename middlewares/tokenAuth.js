@@ -10,10 +10,9 @@ module.exports = async (req, res, next) => {
     }
 
     const token = authHeader[1]
-    
-    const payloadData = jwt.verify(token, process.env.JWT_SECRET)
 
     try {
+        const payloadData = jwt.verify(token, process.env.JWT_SECRET)
         
         const user = await userModel.findById(payloadData.id)
         Reflect.deleteProperty(user, "password")

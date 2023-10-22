@@ -43,6 +43,12 @@ router
 router
     .route("/:id/register")
     .post(tokenAuth, courseController.userRegister)
+router  
+    .route("/popular")
+    .get(courseController.getPopularCourses)
+router
+    .route("/presale")
+    .get(courseController.getPresaleCourses)
 router
     .route("/:href")
     .get(tokenAuth, courseController.getOne)

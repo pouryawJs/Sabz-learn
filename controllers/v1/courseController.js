@@ -222,3 +222,11 @@ exports.getRelatedCourses = async (req, res) => {
 
     return res.json(relatedCourses)
 }
+exports.getPopularCourses = async (req, res) => {
+
+}
+exports.getPresaleCourses = async (req, res) => {
+    const courses = await courseModel.find({ status: "پیش فروش"}).lean();
+
+    return res.json(courses)
+}
