@@ -10,7 +10,9 @@ router
     .get(tokenAuth, isAdmin, contactController.getAll)
     .post(contactController.create)
 
-router.route("/:id").delete(contactController.remove)
+router
+    .route("/:id")
+    .delete(contactController.remove)
 
 router
     .route("/answer")
