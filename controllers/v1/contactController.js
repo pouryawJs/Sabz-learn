@@ -29,7 +29,23 @@ exports.create = async (req, res) => {
 }
 
 exports.remove = async (req, res) => {
+    const { id } = req.params
 
+    // validation
+    const isValidID = isValidObjectId(id)
+
+    if(!isValidID){
+        return res.status(409).json({message: "id is not valid"})
+    }
+
+    // remove
+    const removedContact = await contactModel.findByIdAndRemove(id)
+
+    if(!removedContact){
+        return res.status(404).json({message: "contact not found"})
+    }
+
+    return res.json(removedContact)
 }
 
 exports.answer = async (req, res) => {
