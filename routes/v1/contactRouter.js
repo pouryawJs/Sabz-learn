@@ -15,7 +15,7 @@ router
     .delete(contactController.remove)
 
 router
-    .route("/answer")
+    .route("/answer/:id")
     .post(tokenAuth, isAdmin, contactController.answer)
 
 module.exports = router

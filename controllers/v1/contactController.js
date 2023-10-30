@@ -1,6 +1,7 @@
 const { isValidObjectId } = require("mongoose")
 const contactModel = require("./../../models/Contact")
 const contactValidator = require("./../../validators/contactValidator")
+const nodemailer = require("nodemailer")
 
 exports.getAll = async (req, res) => {
     const allContacts = await contactModel.find().lean()
@@ -49,5 +50,44 @@ exports.remove = async (req, res) => {
 }
 
 exports.answer = async (req, res) => {
-    
+    const { id } = req.params
+
+    // validation
+    const isValidID = isValidObjectId(id)
+
+    if(!isValidID){
+        return res.status(409).json({message: "id is not valid"})
+    }
+
+    // find cointact
+    const contact = await contactModel.findById(id)
+
+    if(!contact){
+        return res.status(404).json({ message: "contact not found"})
+    }
+    // send mail
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "persianroasthub@gmail.com",
+            pass: "wqqpujneedwzefbk"
+        }
+    })
+
+    const mailOption = {
+        from: "persianroasthub@gmail.com",
+        to: contact.email,
+        subject: "nodemailer test",
+        text: req.body.answer
+    }
+
+    transporter.sendMail(mailOption, async (error, info) => {
+        if(error){
+            return res.json({ message: error })
+        }else{
+            // change answer status
+            await contactModel.findByIdAndUpdate(id, { $set: {answer: 1}})
+            return res.json({ message: "email sent successfully"})
+        }
+    })
 }
