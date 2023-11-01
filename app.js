@@ -6,6 +6,7 @@ const categoryRouter = require("./routes/v1/categoryRouter")
 const courseRouter = require("./routes/v1/courseRouter")
 const commentRouter = require("./routes/v1/commentRouter")
 const contactRouter = require("./routes/v1/contactRouter")
+const newsletterRouter = require("./routes/v1/newsletterRouter")
 
 const app = express()
 
@@ -19,5 +20,6 @@ app.use("/api/v1/category", categoryRouter)
 app.use("/api/v1/courses", courseRouter)
 app.use("/api/v1/comments", commentRouter)
 app.use("/api/v1/contact", contactRouter)
+app.use("/api/v1/newsletters", newsletterRouter)
 
 module.exports = app
