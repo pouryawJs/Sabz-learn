@@ -11,6 +11,7 @@ const schema = new mongoose.Schema({
     },
     seen: {
         type: Number, // 0 - 1
+        default: 0
     }
 }, { timestamps: true , versionKey: false })
 

@@ -7,12 +7,13 @@ const router = express.Router()
 
 router
     .route("/")
-    .get(tokenAuth, isAdmin, notificationController.create)
+    .post(tokenAuth, isAdmin, notificationController.create)
+    .get(tokenAuth, isAdmin, notificationController.getAll)
 router
     .route("/:adminID")
     .get(tokenAuth, isAdmin, notificationController.get)
 router
     .route("/:adminID")
-    .get(tokenAuth, isAdmin, notificationController.seen)
+    .put(tokenAuth, isAdmin, notificationController.seen)
 
 module.exports = router
