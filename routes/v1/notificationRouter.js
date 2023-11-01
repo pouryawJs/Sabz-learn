@@ -10,10 +10,10 @@ router
     .post(tokenAuth, isAdmin, notificationController.create)
     .get(tokenAuth, isAdmin, notificationController.getAll)
 router
-    .route("/:adminID")
+    .route("/admins")
     .get(tokenAuth, isAdmin, notificationController.get)
 router
-    .route("/:adminID")
+    .route("/:id/see")
     .put(tokenAuth, isAdmin, notificationController.seen)
 
 module.exports = router

@@ -2,7 +2,11 @@ const { isValidObjectId } = require("mongoose")
 const notificationModel = require("./../../models/Notification")
 
 exports.get = async (req, res) => {
+    const { _id } = req.user
 
+    const adminNotifications = await notificationModel.find({ admin: _id })
+
+    return res.json(adminNotifications)
 }
 
 exports.create = async (req, res) => {
@@ -26,7 +30,23 @@ exports.create = async (req, res) => {
 }
 
 exports.seen = async (req, res) => {
+    const { id } = req.params
 
+    // validation 
+    const isValidID = isValidObjectId(id)
+    
+    if(!isValidID){
+        return res.status(401).json({ message: "id is not valid"})
+    }
+    // update
+    const notification = await notificationModel.findByIdAndUpdate(id, {
+        $set: { seen : 1 }
+    }, { new: true })
+
+    if(!notification){
+        return res.status(404).json({ message: "notification not found"})
+    }
+    return res.json(notification)
 }
 
 exports.getAll = async (req, res) => {
