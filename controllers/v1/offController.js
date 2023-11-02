@@ -1,11 +1,23 @@
 const coursesModel = require("./../../models/Course")
+const OffModel = require("./../../models/Off")
 
 exports.getAll = async (req, res) => {
     // Codes
 }
 
 exports.create = async (req, res) => {
-    // Codes
+    const { code, course, percent, max} = req.body
+
+    const newOff = await OffModel.create({
+        code,
+        course,
+        percent,
+        max,
+        uses: 0,
+        creator: req.user._id
+    })
+
+    return res.status(201).json(newOff)
 }
 
 exports.setOnAll = async (req, res) => {
