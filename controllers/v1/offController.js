@@ -1,3 +1,5 @@
+const coursesModel = require("./../../models/Course")
+
 exports.getAll = async (req, res) => {
     // Codes
 }
@@ -7,7 +9,11 @@ exports.create = async (req, res) => {
 }
 
 exports.setOnAll = async (req, res) => {
-    // Codes
+    const { discount } = req.body
+
+    const coursesDiscounts = await coursesModel.updateMany({ discount })
+
+    return res.json({ message: "discount set seccessfully"})
 }
 
 exports.getOne = async (req, res) => {
@@ -17,4 +23,3 @@ exports.getOne = async (req, res) => {
 exports.remove = async (req, res) => {
     // Codes
 }
-
