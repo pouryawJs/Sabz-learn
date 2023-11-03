@@ -1,3 +1,4 @@
+const { isValidObjectId } = require("mongoose");
 const coursesModel = require("./../../models/Course")
 const OffModel = require("./../../models/Off")
 
@@ -33,7 +34,32 @@ exports.setOnAll = async (req, res) => {
 }
 
 exports.getOne = async (req, res) => {
-    // Codes
+    const { code } = req.params
+    const { course } = req.body
+
+    // id Validation
+    const idValidCourseID = isValidObjectId(course)
+
+    if(!isValidObjectId){
+        return res.status(409).json({ message: "course id is not valid"})
+    }
+
+    // 
+
+    const off = await OffModel.findOne({code, course})
+
+    if(!off){
+        return res.status(404).json({ message: "code not found"})
+    } else if(off.uses === off.max){
+        return res.json({ message: "code is already used"})
+    }
+    await OffModel.findOneAndUpdate({ code, course },{
+        $set: {
+            uses: off.uses + 1
+        }
+    })
+
+    return res.json(off)
 }
 
 exports.remove = async (req, res) => {
