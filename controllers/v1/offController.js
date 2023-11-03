@@ -38,9 +38,9 @@ exports.getOne = async (req, res) => {
     const { course } = req.body
 
     // id Validation
-    const idValidCourseID = isValidObjectId(course)
+    const isValidCourseID = isValidObjectId(course)
 
-    if(!isValidObjectId){
+    if(!isValidCourseID){
         return res.status(409).json({ message: "course id is not valid"})
     }
 
@@ -66,9 +66,9 @@ exports.remove = async (req, res) => {
     const { id } = req.params
 
     // id Validation
-    const idValidID = isValidObjectId(id)
+    const isValidID = isValidObjectId(id)
 
-    if(!isValidObjectId){
+    if(!isValidID){
         return res.status(409).json({ message: "id is not valid"})
     }
 
