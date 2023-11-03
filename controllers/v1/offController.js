@@ -63,5 +63,22 @@ exports.getOne = async (req, res) => {
 }
 
 exports.remove = async (req, res) => {
-    // Codes
+    const { id } = req.params
+
+    // id Validation
+    const idValidID = isValidObjectId(id)
+
+    if(!isValidObjectId){
+        return res.status(409).json({ message: "id is not valid"})
+    }
+
+    // remove
+
+    const removedOff = await OffModel.findByIdAndRemove(id);
+
+    if(!removedOff){
+        return res.status(404).json({ message: "not found"})
+    }
+
+    return res.json(removedOff)
 }

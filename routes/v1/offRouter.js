@@ -16,7 +16,7 @@ router
     .route("/:code")
     .post(tokenAuth, offController.getOne)
 router
-    .route(":id")
+    .route("/:id")
     .delete(tokenAuth, isAdmin, offController.remove)
 
 module.exports = router
