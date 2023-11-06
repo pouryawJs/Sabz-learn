@@ -1,11 +1,45 @@
 const articleModel = require("./../../models/Article")
+const articleValidator = require("./../../validators/articleValidator")
 
 exports.getAll = async (req, res) => {
-    //codes
+    const articles = await articleModel.find({})
+        .populate("categoryID")
+        .populate("creator", "name")
+    return res.json(articles)
 }
 
 exports.create = async (req, res) => {
-    //codes
+    const { title,
+        desciption,
+        body,
+        href,
+        categoryID,
+        publish} = req.body
+    
+    // validation
+
+    const dataValidation = articleValidator({ title,
+        desciption,
+        body,
+        href,
+        categoryID,
+        publish});
+
+    if(dataValidation !== true){
+        return res.status(409).json(dataValidation)
+    }
+    console.log(req.body)
+    // create
+    const article = await articleModel.create({ title,
+        desciption,
+        body,
+        cover: req.file.filename,
+        href,
+        categoryID,
+        creator:req.user._id,
+        publish})
+    
+    return res.status(201).json(article)
 }
 
 exports.getOne = async (req, res) => {

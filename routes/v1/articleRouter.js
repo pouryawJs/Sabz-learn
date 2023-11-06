@@ -2,7 +2,8 @@ const express = require("express");
 const articleController = require("./../../controllers/v1/articleController");
 const isAdmin = require("./../../middlewares/isAdmin");
 const tokenAuth = require("./../../middlewares/tokenAuth");
-const multer = require("./../../utils/uploader")
+const multer = require("multer")
+const multerStorage = require("./../../utils/uploader")
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ router
     .post(
         tokenAuth,
         isAdmin,
-        multer({ Storage: multerStorage, limits: { fileSize: 100000000 }}),
+        multer({ storage: multerStorage, limits: {fileSize:1000000} }).single("cover"),
         articleController.create);
 router
     .route("/:href")
@@ -25,7 +26,7 @@ router
     .post(
         tokenAuth,
         isAdmin,
-        multer({ Storage: multerStorage, limits: { fileSize: 100000000 }}), 
+        // multer({ Storage: multerStorage, limits: { fileSize: 100000000 }}), 
         articleController.saveDraft)
         
 module.exports = router;
