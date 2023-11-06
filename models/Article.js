@@ -24,12 +24,12 @@ const schema = new mongoose.Schema(
         },
         categoryID: {
             type: mongoose.Types.ObjectId,
-            ref: "catrgory",
+            ref: "category",
             required: true,
         },
         creator: {
             type: mongoose.Types.ObjectId,
-            ref: "users",
+            ref: "User",
             required: true,
         },
         publish: {
