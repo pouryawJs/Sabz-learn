@@ -43,7 +43,17 @@ exports.create = async (req, res) => {
 }
 
 exports.getOne = async (req, res) => {
-    //codes
+    const { href } = req.params
+    
+    const article = await articleModel.findOne({ href })
+        .populate("categoryID")
+        .populate("creator", "name")
+    
+    if(!article){
+        return res.status(404).json({ message: "article not found"})
+    }
+
+    return res.json(article)
 }
 
 exports.remove = async (req, res) => {
