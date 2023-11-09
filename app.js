@@ -11,6 +11,7 @@ const searchRouter = require("./routes/v1/searchRouter")
 const notificationRouter = require("./routes/v1/notificationRouter")
 const offRouter = require("./routes/v1/offRouter")
 const articleRouter = require("./routes/v1/articleRouter")
+const orderRouter = require("./routes/v1/orderRouter")
 
 const app = express()
 
@@ -29,5 +30,6 @@ app.use("/api/v1/search", searchRouter)
 app.use("/api/v1/notifications", notificationRouter)
 app.use("/api/v1/offs", offRouter)
 app.use("/api/v1/articles", articleRouter)
+app.use("/api/v1/order", orderRouter)
 
 module.exports = app
