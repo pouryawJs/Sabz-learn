@@ -1,3 +1,6 @@
+const departmentModel = require("./../../models/Department")
+const departmentSubModel = require("./../../models/Department-sub")
+
 exports.getAll = async (req, res) => {
     // codes
 }
@@ -11,11 +14,13 @@ exports.userTicketes = async (req, res) => {
 }
 
 exports.departments = async (req, res) => {
-    // codes
+    const departments = await departmentModel.find()
+    return res.json(departments)
 }
 
 exports.departmentsSub = async (req, res) => {
-    // codes
+    const departmentSubs = await departmentSubModel.find({ parent: req.body.parent}).lean()
+    return res.json(departmentSubs)
 }
 
 exports.setAnswer = async (req, res) => {

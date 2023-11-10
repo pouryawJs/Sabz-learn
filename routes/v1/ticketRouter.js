@@ -16,7 +16,7 @@ router
     .route("/departments")
     .get(ticketController.departments)
 router
-    .route("/departments-subs/:id")
+    .route("/departments/:id/subs")
     .get(ticketController.departmentsSub)
 router
     .route("/answer")
