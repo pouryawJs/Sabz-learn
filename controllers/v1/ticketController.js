@@ -59,7 +59,26 @@ exports.departmentsSub = async (req, res) => {
 }
 
 exports.setAnswer = async (req, res) => {
-    // codes
+    const { body, ticketID} = req.body
+
+    const ticket = await ticketModel.findOne({ _id: ticketID }).lean()
+
+    const answer = await ticketModel.create({
+        title: "پاسخ به تیکت شما",
+        departmentID: ticket.departmentID,
+        departmentSubID: ticket.departmentSubID,
+        body,
+        priority: ticket.priority,
+        user: req.user._id,
+        answer: 0,
+        isAnswer: 1
+    })
+
+    await ticketModel.findOneAndUpdate({ _id: ticketID}, {
+        $set: {answer: 1}
+    })
+
+    return res.status(201).json(answer)
 }
 
 exports.getAnswer = async (req, res) => {
