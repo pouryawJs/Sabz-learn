@@ -3,7 +3,14 @@ const departmentModel = require("./../../models/Department")
 const departmentSubModel = require("./../../models/Department-sub")
 
 exports.getAll = async (req, res) => {
-    // codes
+    const tickets = await ticketModel
+        .find({ answer: 0})
+        .populate("departmentID")
+        .populate("departmentSubID")
+        .populate("user")
+        .lean();
+        
+    return res.json(tickets)
 }
 
 exports.create = async (req, res) => {
