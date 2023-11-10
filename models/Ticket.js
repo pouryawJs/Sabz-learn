@@ -35,8 +35,18 @@ const schema = new mongoose.Schema(
         },
         course: {
             type: mongoose.Types.ObjectId,
-            ref: "courses"
-        }
+            ref: "courses",
+            required: false
+        },
+        parent: {
+            type: mongoose.Types.ObjectId,
+            ref: "Ticket",
+            required: false
+        },
+        // isAnswer: {
+        //     type: Number,
+        //     required: true
+        // }
 
     },
     { timestamps: true }

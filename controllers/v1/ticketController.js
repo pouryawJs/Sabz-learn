@@ -1,3 +1,4 @@
+const ticketModel = require("./../../models/Ticket")
 const departmentModel = require("./../../models/Department")
 const departmentSubModel = require("./../../models/Department-sub")
 
@@ -6,7 +7,34 @@ exports.getAll = async (req, res) => {
 }
 
 exports.create = async (req, res) => {
-    // codes
+    const {
+        title,
+        departmentID,
+        departmentSubID,
+        body,
+        priority,
+        course
+    } = req.body
+
+    const ticket = await ticketModel.create({
+        title,
+        departmentID,
+        departmentSubID,
+        body,
+        priority,
+        user: req.user._id,
+        answer: 0,
+        isAnswer: 0
+    })
+
+    const mainTicket = await ticketModel
+        .findOne({ _id: ticket._id})
+        .populate("departmentID")
+        .populate("departmentSubID")
+        .populate("user")
+        .lean();
+
+    return res.status(201).json(mainTicket)
 }
 
 exports.userTicketes = async (req, res) => {
