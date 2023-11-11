@@ -45,7 +45,14 @@ exports.create = async (req, res) => {
 }
 
 exports.userTicketes = async (req, res) => {
-    // codes
+    const tickets = await ticketModel.find({user: req.user._id})
+        .sort({ _id : -1})
+        .populate("departmentID")
+        .populate("departmentSubID")
+        .populate("user")
+        .lean();
+    
+    return res.json(tickets)
 }
 
 exports.departments = async (req, res) => {
@@ -71,6 +78,7 @@ exports.setAnswer = async (req, res) => {
         priority: ticket.priority,
         user: req.user._id,
         answer: 0,
+        parent: ticketID,
         isAnswer: 1
     })
 
@@ -82,9 +90,13 @@ exports.setAnswer = async (req, res) => {
 }
 
 exports.getAnswer = async (req, res) => {
-    // codes
-}
+    const { id } = req.body
 
-exports.getAnswer = async (req, res) => {
-    // codes
+    const ticket = await ticketModel.findOne({ _id: id})
+    const ticketAnswer = await ticketModel.find({ parent : id})
+
+    return res.json({
+        ticket,
+        Answer: ticketAnswer ? ticketAnswer : null
+})
 }
